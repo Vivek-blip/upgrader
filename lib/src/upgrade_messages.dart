@@ -392,7 +392,7 @@ class UpgraderMessages {
         message = 'SENERE';
         break;
       case 'nl':
-        message = 'LATER';
+        message = 'Later';
         break;
       case 'pt':
         message = 'MAIS TARDE';
@@ -420,7 +420,7 @@ class UpgraderMessages {
         break;
       case 'en':
       default:
-        message = 'LATER';
+        message = 'Later';
         break;
     }
     return message;
@@ -518,7 +518,7 @@ class UpgraderMessages {
         break;
       case 'en':
       default:
-        message = 'UPDATE NOW';
+        message = 'Update';
         break;
     }
     return message;
@@ -758,7 +758,7 @@ class UpgraderMessages {
         break;
       case 'en':
       default:
-        message = 'Update App?';
+        message = 'New version of the app available on the store.';
         break;
     }
     return message;

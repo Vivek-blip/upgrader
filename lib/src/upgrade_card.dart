@@ -32,15 +32,17 @@ class UpgradeCard extends UpgradeBase {
               processed.data != null &&
               processed.data!) {
             if (upgrader.shouldDisplayUpgrade()) {
-              final title = upgrader.messages.message(UpgraderMessage.title);
-              final message = upgrader.message();
+              final title = upgrader.messages
+                  .message(UpgraderMessage.title)
+                  ?.toLowerCase();
+
               final releaseNotes = upgrader.releaseNotes;
               final shouldDisplayReleaseNotes =
                   upgrader.shouldDisplayReleaseNotes();
               if (upgrader.debugLogging) {
                 print('UpgradeCard: will display');
                 print('UpgradeCard: showDialog title: $title');
-                print('UpgradeCard: showDialog message: $message');
+
                 print(
                     'UpgradeCard: shouldDisplayReleaseNotes: $shouldDisplayReleaseNotes');
 
@@ -76,33 +78,8 @@ class UpgradeCard extends UpgradeBase {
                   margin: margin,
                   child: AlertStyleWidget(
                       title: Text(title ?? ''),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(message),
-                          Padding(
-                              padding: const EdgeInsets.only(top: 15.0),
-                              child: Text(upgrader.messages
-                                      .message(UpgraderMessage.prompt) ??
-                                  '')),
-                          if (notes != null) notes,
-                        ],
-                      ),
+                      content: SizedBox(),
                       actions: <Widget>[
-                        if (upgrader.showIgnore)
-                          TextButton(
-                              child: Text(upgrader.messages.message(
-                                      UpgraderMessage.buttonTitleIgnore) ??
-                                  ''),
-                              onPressed: () {
-                                // Save the date/time as the last time alerted.
-                                upgrader.saveLastAlerted();
-
-                                upgrader.onUserIgnored(context, false);
-                                state.forceUpdateState();
-                              }),
                         if (upgrader.showLater)
                           TextButton(
                               child: Text(upgrader.messages.message(

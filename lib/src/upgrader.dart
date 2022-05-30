@@ -361,16 +361,6 @@ class Upgrader {
 
   String? get releaseNotes => _releaseNotes;
 
-  String message() {
-    var msg = messages.message(UpgraderMessage.body)!;
-    msg = msg.replaceAll('{{appName}}', appName());
-    msg = msg.replaceAll(
-        '{{currentAppStoreVersion}}', currentAppStoreVersion() ?? '');
-    msg = msg.replaceAll(
-        '{{currentInstalledVersion}}', currentInstalledVersion() ?? '');
-    return msg;
-  }
-
   /// Only called by [UpgradeAlert].
   void checkVersion({required BuildContext context}) {
     if (!_displayed) {
@@ -384,8 +374,8 @@ class Upgrader {
         Future.delayed(const Duration(milliseconds: 0), () {
           _showDialog(
               context: context,
-              title: messages.message(UpgraderMessage.title),
-              message: message(),
+              title: '',
+              message: messages.message(UpgraderMessage.title) ?? '',
               releaseNotes: shouldDisplayReleaseNotes() ? _releaseNotes : null,
               canDismissDialog: canDismissDialog);
         });
@@ -574,41 +564,25 @@ class Upgrader {
       BuildContext context) {
     Widget? notes;
     if (releaseNotes != null) {
-      notes = Padding(
-          padding: const EdgeInsets.only(top: 15.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(messages.message(UpgraderMessage.releaseNotes)!,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              Text(
-                releaseNotes,
-                maxLines: 15,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ));
+      notes = Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(messages.message(UpgraderMessage.releaseNotes)!,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+        ],
+      );
     }
     return AlertDialog(
-      title: Text(title),
       content: SingleChildScrollView(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(message),
-          Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Text(messages.message(UpgraderMessage.prompt)!)),
-          if (notes != null) notes,
         ],
       )),
       actions: <Widget>[
-        if (showIgnore)
-          TextButton(
-              child: Text(messages.message(UpgraderMessage.buttonTitleIgnore)!),
-              onPressed: () => onUserIgnored(context, true)),
         if (showLater)
           TextButton(
               child: Text(messages.message(UpgraderMessage.buttonTitleLater)!),
@@ -623,21 +597,7 @@ class Upgrader {
   CupertinoAlertDialog _cupertinoAlertDialog(String title, String message,
       String? releaseNotes, BuildContext context) {
     Widget? notes;
-    if (releaseNotes != null) {
-      notes = Padding(
-          padding: const EdgeInsets.only(top: 15.0),
-          child: Column(
-            children: <Widget>[
-              Text(messages.message(UpgraderMessage.releaseNotes)!,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              Text(
-                releaseNotes,
-                maxLines: 14,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ));
-    }
+
     return CupertinoAlertDialog(
       title: Text(title),
       content: Column(
@@ -645,17 +605,9 @@ class Upgrader {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Text(message),
-          Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Text(messages.message(UpgraderMessage.prompt)!)),
-          if (notes != null) notes,
         ],
       ),
       actions: <Widget>[
-        if (showIgnore)
-          CupertinoDialogAction(
-              child: Text(messages.message(UpgraderMessage.buttonTitleIgnore)!),
-              onPressed: () => onUserIgnored(context, true)),
         if (showLater)
           CupertinoDialogAction(
               child: Text(messages.message(UpgraderMessage.buttonTitleLater)!),
